@@ -9,7 +9,7 @@ const app = new Koa();
 app.use(cors());
 app.use(bodyParser());
 
-const whiteList = ["/myblog/register"];
+const whiteList = ["/myblog/register", "/myblog/login"];
 
 app.use(async (ctx, next) => {
   if (whiteList.includes(ctx.url)) {
@@ -24,8 +24,8 @@ app.use(async (ctx, next) => {
           try {
             //jwt.verify方法验证token是否有效
             const decoded = await jwt.verify(token, Auth.secretOrPrivateKey);
-            console.log(decoded);
             await next();
+            ctx.body = { code: status.SUCCESS, data: decoded };
           } catch (error) {
             ctx.body = { code: status.NO_AUTH_B, msg: "登录已过期，请重新登录！" };
           }

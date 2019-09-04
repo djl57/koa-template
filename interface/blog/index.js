@@ -49,7 +49,7 @@ router.post(partName + "/login", async ctx => {
       /* jwt.sign("规则", "加密名字", "过期时间", "箭头函数") */
       const rule = { user_id: result[0].user_id, nickname: result[0].nickname, email: result[0].email };
       const token = await jwt.sign(rule, Auth.secretOrPrivateKey, { expiresIn: "1h" });
-      ctx.body = { code: status.SUCCESS, msg: "登录成功！", token: "Bearer " + token };
+      ctx.body = { code: status.SUCCESS, msg: "登录成功！", token: "Bearer " + token, data: result[0] };
     } catch (error) {
       ctx.body = { code: status.NO_AUTH_A, msg: "token 生成失败！" };
     }
@@ -58,8 +58,8 @@ router.post(partName + "/login", async ctx => {
   }
 });
 
-router.post(partName + "/auth", async ctx => {
-  ctx.body = { code: status.SUCCESS };
+router.post(partName + "/auth", async (ctx, next) => {
+  next()
 });
 
 module.exports = router;
