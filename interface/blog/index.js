@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 const status = require("./config");
-const Auth = require('./../../utils/auth')
+const Auth = require("./../../utils/auth");
 
 const partName = "/myblog";
 
@@ -36,6 +36,7 @@ router.post(partName + "/register", async ctx => {
 
 router.post(partName + "/login", async ctx => {
   const body = ctx.request.body;
+  console.log("-----body----", body);
   const { email, password } = body;
   const result = await DB.sqlQuery("SELECT * FROM `user` WHERE `email` = ?", [email]);
   if (result.length === 0) {
